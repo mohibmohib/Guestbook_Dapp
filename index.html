@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090d1b" />
+  <meta name="description" content="Leave a message on the blockchain with ChainGuestbook." />
+  <title>ChainGuestbook — A message that lasts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="ChainGuestbook home">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <span class="brand-light">Guestbook</span>
+    </a>
+
+    <nav class="header-nav" aria-label="Main navigation">
+      <a href="#write">Write a message</a>
+      <a href="#guestbook">Guestbook</a>
+    </nav>
+
+    <button id="connectWalletBtn" class="wallet-button" type="button">
+      <span class="wallet-dot"></span>
+      Connect wallet
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span class="eyebrow-line"></span> YOUR WORDS. ON THE BLOCKCHAIN.</div>
+      <h1>Leave a mark.<br><span>Make it last.</span></h1>
+      <p class="hero-copy">
+        A simple guestbook powered by Ethereum. Share a thought, sign the chain,
+        and let your message become part of a public on-chain record.
+      </p>
+      <a class="hero-link" href="#write">Leave your message <span aria-hidden="true">↓</span></a>
+
+      <div class="hero-orbit orbit-one"></div>
+      <div class="hero-orbit orbit-two"></div>
+      <div class="hero-orbit orbit-three"></div>
+      <div class="hero-center">
+        <div class="chain-symbol">Ξ</div>
+        <span>SEP<small>OLIA</small></span>
+      </div>
+    </section>
+
+    <section class="stats-row" aria-label="Guestbook statistics">
+      <div class="stat-card">
+        <div class="stat-icon">▤</div>
+        <div>
+          <p class="stat-label">TOTAL MESSAGES</p>
+          <p id="totalMessagesDisplay" class="stat-value">—</p>
+        </div>
+      </div>
+      <div class="stat-card network-card">
+        <div class="network-icon"><span></span></div>
+        <div>
+          <p class="stat-label">NETWORK</p>
+          <p class="stat-value stat-network">Ethereum Sepolia</p>
+        </div>
+        <span class="network-pill">TESTNET</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon lock-icon">⌑</div>
+        <div>
+          <p class="stat-label">STORAGE</p>
+          <p class="stat-value stat-network">On-chain</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="write" class="content-grid">
+      <div class="section-intro">
+        <p class="section-kicker">01 / ADD YOUR VOICE</p>
+        <h2>Every message<br>starts with <span>you.</span></h2>
+        <p>Your message is submitted through your connected wallet and stored by the Guestbook smart contract.</p>
+        <div class="security-note">
+          <span class="note-icon">◇</span>
+          <span><strong>Wallet-controlled</strong><br>Your wallet must approve the transaction. You stay in control.</span>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-heading">
+          <div>
+            <p class="section-kicker">SIGN THE GUESTBOOK</p>
+            <h3>Write a message</h3>
+          </div>
+          <span class="form-sparkle">✳</span>
+        </div>
+
+        <form id="guestbookForm">
+          <label for="visitorName">Your name</label>
+          <input id="visitorName" name="visitorName" type="text" maxlength="60"
+                 placeholder="e.g. Alex Morgan" autocomplete="name" required />
+
+          <div class="label-row">
+            <label for="visitorMessage">Your message</label>
+            <span class="character-count"><span id="currentChars">0</span> / 200</span>
+          </div>
+          <textarea id="visitorMessage" name="visitorMessage" maxlength="200"
+                    rows="5" placeholder="Leave a thought for the blockchain..." required></textarea>
+
+          <div class="form-hint"><span>ⓘ</span> Keep it kind. Your message will be publicly visible on-chain.</div>
+
+          <button id="submitBtn" class="submit-button" type="submit" disabled>
+            <span>Submit to blockchain</span><span class="button-arrow">↗</span>
+          </button>
+          <p class="wallet-hint">Connect your MetaMask wallet to enable submission.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="guestbook" class="guestbook-section">
+      <div class="guestbook-heading">
+        <div>
+          <p class="section-kicker">02 / THE COMMUNITY</p>
+          <h2>Words from the <span>chain.</span></h2>
+          <p class="guestbook-subtitle">Messages shared by visitors, stored on Ethereum.</p>
+        </div>
+        <div class="live-label"><span></span> BLOCKCHAIN RECORDS</div>
+      </div>
+
+      <div id="loadingMessages" class="loading-message"></div>
+      <div id="messagesContainer" class="messages-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#">
+      <span class="brand-mark" aria-hidden="true">G</span>
+      <span class="brand-light">Guestbook</span>
+    </a>
+    <p>Built on Ethereum Sepolia · Powered by community</p>
+    <a href="https://sepolia.etherscan.io/" target="_blank" rel="noopener noreferrer">Explore Sepolia ↗</a>
+  </footer>
+
+  <!-- Load Web3 before your app.js file. -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.4/dist/web3.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
